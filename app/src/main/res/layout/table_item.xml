@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/res_test"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.25"
+        android:background="@android:color/holo_orange_light"
+        android:gravity="center"
+        android:text="Test" />
+
+    <TextView
+        android:id="@+id/res_freq"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.25"
+        android:background="@android:color/holo_orange_light"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/res_ear"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.25"
+        android:background="@android:color/holo_orange_light"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/res_dB"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.25"
+        android:background="@android:color/holo_orange_light"
+        android:gravity="center" />
+
+</TableRow>
