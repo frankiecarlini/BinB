@@ -6,6 +6,7 @@ import android.media.AudioFormat;
 import android.media.AudioTrack;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -33,40 +34,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.Math.log10;
 
 
 public class MainActivity extends AppCompatActivity  {
-
-    float volume1 = 0.00f;
-    boolean fineStep1=true;
-    Thread t;
-    TextView nome;
-    TextView cognome;
-    String nome_file;
-
-
-    int freq;
-    int numFreq=0;
-    int[] frequences = {125,250,500,1000,2000};
-    int cont=0;
-    float[] results = new float[frequences.length*4];
-    float[] loadRes = new float[frequences.length*4];
-    int bb1=0;
-    int dxB;
-    int sxB;
-
-    SoundPool pool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
-    int count = (int)(44100.0 * 2.0 * (6000 / 1000.0)) & ~1; //529200
-
-    AudioTrack testDXUp;
-    AudioTrack testSXUp;
-
-    AudioTrack testBB;
-    AudioTrack testBSX;
-    AudioTrack testBDX;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,47 +48,52 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.menu_iniziale);
 
         ImageButton nuovo = (ImageButton)findViewById(R.id.new_audio);
-        ImageButton carica = (ImageButton) findViewById(R.id.load_audio);
         ImageButton bb = (ImageButton)findViewById(R.id.bb_test);
+
         nuovo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(MainActivity.this, Paziente.class);
-                //myIntent.putExtra("key", value); //Optional parameters
+                Intent myIntent = new Intent(MainActivity.this, LoginAudioTest.class);
                 MainActivity.this.startActivity(myIntent);
 
             }
 
         });
 
-        carica.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(MainActivity.this, Paziente2.class);
-                //myIntent.putExtra("key", value); //Optional parameters
-                MainActivity.this.startActivity(myIntent);            }
-
-        });
-
         bb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(MainActivity.this, Paziente3.class);
-                //myIntent.putExtra("key", value); //Optional parameters
+                Intent myIntent = new Intent(MainActivity.this, LoadAudioTest.class);
                 MainActivity.this.startActivity(myIntent);            }
 
         });
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater=getMenuInflater();
+        inflater.inflate(R.menu.my_menu,menu);
+        return true;
+    }
 
-    public static void creaFile(String nomefile,Context context){
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id=item.getItemId();
+        switch(id)
+        {
+            case R.id.n_ad:
+                Intent myIntent = new Intent(MainActivity.this, Settings.class);
+                MainActivity.this.startActivity(myIntent);
+        }
+        return false;
+    }
+
+    public static void creaFile(String nomefile, Context context){
         File path = context.getFilesDir();
         File file = new File(path,nomefile);
     }
-    //per la memoria esterna: File path = context.getExternalFilesDir(null);
     public static void writeToFile(String nomefile , String data, Context context) {
-        //path /data/data/com.example.frankie.binb/files/
 
         try {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(nomefile, Context.MODE_PRIVATE));
@@ -126,40 +105,8 @@ public class MainActivity extends AppCompatActivity  {
         }
     }
 
-    private String readFromFile(String nomefile ,Context context) {
 
-        String ret = "";
-
-        try {
-            InputStream inputStream = context.openFileInput(nomefile);
-
-            if ( inputStream != null ) {
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String receiveString = "";
-                StringBuilder stringBuilder = new StringBuilder();
-
-                while ( (receiveString = bufferedReader.readLine()) != null ) {
-                    stringBuilder.append(receiveString);
-                }
-
-                inputStream.close();
-                ret = stringBuilder.toString();
-            }
-        }
-        catch (FileNotFoundException e) {
-            Log.e("login activity", "File not found: " + e.toString());
-        } catch (IOException e) {
-            Log.e("login activity", "Can not read file: " + e.toString());
-        }
-
-        return ret;
-    }
-
-    public static float[] readValue(String nomefile ,Context context) {
-        //path /data/data/com.example.frankie.binb/files/
-
-        float[] res = new float[20];
+    public static int numFreq(String nomefile ,Context context) {
         int i=0;
 
         try {
@@ -168,12 +115,69 @@ public class MainActivity extends AppCompatActivity  {
             if ( inputStream != null ) {
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String receiveString = "";
-                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (bufferedReader.readLine()) != null ) {
+                   i++;
+                }
+                inputStream.close();
+            }
+        }
+        catch (FileNotFoundException e) {
+            Log.e("login activity", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("login activity", "Can not read file: " + e.toString());
+        }
+
+
+        return i;
+    }
+
+
+    public static int[] readFreq(String nomefile ,int numFreq, Context context) {
+
+        int[] freq = new int[numFreq];
+        int i=0;
+
+        try {
+            InputStream inputStream = context.openFileInput(nomefile);
+
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString;
 
                 while ( (receiveString = bufferedReader.readLine()) != null ) {
-                    //stringBuilder.append(receiveString);
-                    res[i]= Float.parseFloat(receiveString);
+                    freq[i]=Integer.parseInt(receiveString);
+                    i++;
+                }
+                inputStream.close();
+            }
+        }
+        catch (FileNotFoundException e) {
+            Log.e("login activity", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("login activity", "Can not read file: " + e.toString());
+        }
+
+
+        return freq;
+    }
+
+    public static float[] readValues(String nomefile, int numFreq, Context context) {
+
+        float[] res = new float[numFreq*4];
+        int i=0;
+
+        try {
+            InputStream inputStream = context.openFileInput(nomefile);
+
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString;
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    res[i]=Float.parseFloat(receiveString);
                     i++;
                 }
 
@@ -193,12 +197,12 @@ public class MainActivity extends AppCompatActivity  {
     private AudioTrack generateBB(double freqHz, double freqHz2, int durationMs)
     {
         int count = (int)(44100.0 * 2.0 * (durationMs / 1000.0)) & ~1;
-        //Toast.makeText(getApplicationContext(),"Count: "+count,Toast.LENGTH_SHORT).show();
+
         short[] samples = new short[count];
         for(int i = 0; i < count; i += 2){
             short sample1 = (short)(Math.sin(2 * Math.PI * i / (44100.0 / freqHz)) * 0x7FFF);
             short sample2 = (short)(Math.sin(2 * Math.PI * i / (44100.0 / freqHz2)) * 0x7FFF);
-            samples[i + 0] = sample1;
+            samples[i] = sample1;
             samples[i + 1] = sample2;
 
         }
@@ -210,8 +214,6 @@ public class MainActivity extends AppCompatActivity  {
         return track;
     }
 
-    //AudioTrack (int streamType,int sampleRateInHz,int channelConfig,int audioFormat,
-    //int bufferSizeInBytes,int mode,int sessionId)
     private AudioTrack generateTone(double freqHz, int durationMs)
     {
         int count = (int)(44100.0 * 2.0 * (durationMs / 1000.0)) & ~1;
@@ -219,7 +221,7 @@ public class MainActivity extends AppCompatActivity  {
 
         for(int i = 0; i < count; i += 2){
             short sample = (short)(Math.sin(2 * Math.PI * i / (44100.0 / freqHz)) * 0x7FFF);
-            samples[i + 0] = sample;
+            samples[i] = sample;
             samples[i + 1] = sample;
         }
         AudioTrack track = new AudioTrack(AudioManager.STREAM_MUSIC, 44100,
@@ -254,7 +256,7 @@ public class MainActivity extends AppCompatActivity  {
 
         for(int i = 0; i < count; i += 2){
             short sample = (short)(Math.sin(2 * Math.PI * i / (44100.0 / freqHz)) * 0x7FFF);
-            samples[i + 0] = sample;
+            samples[i] = sample;
         }
         AudioTrack track = new AudioTrack(AudioManager.STREAM_MUSIC, 44100,
                 AudioFormat.CHANNEL_OUT_STEREO, AudioFormat.ENCODING_PCM_16BIT,
@@ -270,7 +272,7 @@ public class MainActivity extends AppCompatActivity  {
         if (linear != 0.0f)
             db = 20.0f * log10(linear);
         else
-            db = -144.0f;  // effectively minus infinity
+            db = -144.0f;
         return (float)db;
     }
 

@@ -29,13 +29,12 @@ public class Risultati extends AppCompatActivity {
         ImageButton home = (ImageButton)findViewById(R.id.res_home);
         ImageButton bb = (ImageButton)findViewById(R.id.res_bb);
         Intent myIntent = getIntent(); //recuperare l'intent
-        final float [] r= myIntent.getFloatArrayExtra("results");
+        final float [] r= myIntent.getFloatArrayExtra("r");
 
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(Risultati.this, MainActivity.class);
-                //myIntent.putExtra("key", value); //Optional parameters
                 Risultati.this.startActivity(myIntent);
             }
 

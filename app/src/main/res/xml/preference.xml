@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_orange_light"
+    android:orientation="vertical">
+    <PreferenceCategory
+        android:title="Audio Test">
+    <MultiSelectListPreference
+        android:key="multiList"
+        android:title="Scegli le Frequenze"
+        android:summary="@string/summary_freq"
+        android:entries="@array/pref_freq"
+        android:entryValues="@array/pref_freqvalues"
+        android:defaultValue="@array/default_array"
+        />
+
+        <ListPreference
+            android:key="incremento"
+            android:title="@string/pref_incre"
+            android:summary="@string/summary_incr"
+            android:defaultValue="5"
+            android:entries="@array/incr_entries"
+            android:entryValues="@array/incr_values" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Test Bineurale">
+        <ListPreference
+            android:key="example_list"
+            android:title="@string/pref_deltaFreq"
+            android:summary="@string/summary_delta"
+            android:defaultValue="10"
+            android:entries="@array/pref_deltaF"
+            android:entryValues="@array/pref_deltaFvalues" />
+
+        <ListPreference
+            android:key="durataBB"
+            android:title="@string/pref_durataBB"
+            android:summary="@string/summary_bb"
+            android:defaultValue="60"
+            android:entries="@array/durataBB_entries"
+            android:entryValues="@array/durataBB_valori" />
+
+
+    </PreferenceCategory>
+</PreferenceScreen>

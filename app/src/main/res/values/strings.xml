@@ -1,4 +1,154 @@
 <resources>
+    <string name="settings">Settings</string>
+    <string name="pref_deltaFreq">Delta F</string>
+    <string name="pref_incre">Settaggi Volume</string>
+    <string name="pref_durataBB">Durata Battito</string>
+    <string name="summary_freq">seleziona le frequenze per il test</string>
+    <string name="summary_incr">imposta la velocità del incremento/decremento
+        di volume del segnale audio generato</string>
+    <string name="summary_bb">imposta la durata del singolo battito binaurale"</string>
+    <string name="summary_delta">scegli il valore delta corrispondente alla variazione
+        di frequenza dei suoni generati nei due auricolari </string>
+    <string name="new_audiotest">Nuovo AudioTest</string>
+    <string name="new_bb">Test Binaurale</string>
+
+    <string name="login_nome">Nome</string>
+    <string name="login_cognome">Cognome</string>
+    <string name="button_audiotest">Nuovo AudioTest</string>
+    <string name="crono_time">tempo :</string>
+    <string name="right_ear">Orecchio : destro</string>
+    <string name="left_ear">Orecchio : sinistro</string>
+    <string name="volume_up">Volume : crescente</string>
+    <string name="volume_down">Volume : decrescente</string>
+
+    <string name="seleziona_paz">Seleziona paziente</string>
+    <string name="inizia_test">Inizia Test</string>
+
+
+
+
+
+
+    <string-array name="default_array">
+        <item>125</item>
+        <item>250</item>
+        <item>500</item>
+        <item>1000</item>
+        <item>2000</item>
+    </string-array>
+
+    <string-array name="pref_freq">
+        <item>100</item>
+        <item>125</item>
+        <item>150</item>
+        <item>200</item>
+        <item>225</item>
+        <item>250</item>
+        <item>300</item>
+        <item>350</item>
+        <item>400</item>
+        <item>450</item>
+        <item>500</item>
+        <item>550</item>
+        <item>600</item>
+        <item>650</item>
+        <item>700</item>
+        <item>750</item>
+        <item>800</item>
+        <item>900</item>
+        <item>1000</item>
+        <item>1250</item>
+        <item>1500</item>
+        <item>1750</item>
+        <item>2000</item>
+    </string-array>
+    <string-array name="pref_freqvalues">
+        <item>100</item>
+        <item>125</item>
+        <item>150</item>
+        <item>200</item>
+        <item>225</item>
+        <item>250</item>
+        <item>300</item>
+        <item>350</item>
+        <item>400</item>
+        <item>450</item>
+        <item>500</item>
+        <item>550</item>
+        <item>600</item>
+        <item>650</item>
+        <item>700</item>
+        <item>750</item>
+        <item>800</item>
+        <item>900</item>
+        <item>1000</item>
+        <item>1250</item>
+        <item>1500</item>
+        <item>1750</item>
+        <item>2000</item>
+    </string-array>
+
+    <string-array name="pref_deltaF">
+        <item>5 Hz</item>
+        <item>10 Hz</item>
+        <item>15 Hz</item>
+        <item>20 Hz</item>
+        <item>25 Hz</item>
+        <item>30 Hz</item>
+        <item>35 Hz</item>
+        <item>40 Hz</item>
+    </string-array>
+    <string-array name="pref_deltaFvalues">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+        <item>35</item>
+        <item>40</item>
+    </string-array>
+
+    <string-array name="incr_entries">
+        <item>Lento</item>
+        <item>Normale</item>
+        <item>Rapido</item>
+    </string-array>
+
+    <string-array name="incr_values">
+        <item>2</item>
+        <item>5</item>
+        <item>10</item>
+    </string-array>
+
+    <string-array name="durataBB_entries">
+        <item>10 s</item>
+        <item>20 s</item>
+        <item>30 s</item>
+        <item>40 s</item>
+        <item>50 s</item>
+        <item>60 s</item>
+        <item>70 s</item>
+        <item>80 s</item>
+        <item>90 s</item>
+        <item>100 s</item>
+        <item>110 s</item>
+        <item>120 s</item>
+    </string-array>
+    <string-array name="durataBB_valori">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+        <item>70</item>
+        <item>80</item>
+        <item>90</item>
+        <item>100</item>
+        <item>110</item>
+        <item>120</item>
+    </string-array>
     <string name="app_name">BinB</string>
     <string name="open">Open</string>
     <string name="close">Close</string>

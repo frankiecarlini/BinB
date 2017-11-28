@@ -1,12 +1,17 @@
 package com.example.frankie.binb;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioTrack;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.preference.ListPreference;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,15 +20,10 @@ import static com.example.frankie.binb.MainActivity.LinearToDecibel;
 import static com.example.frankie.binb.MainActivity.generateDXTone;
 import static com.example.frankie.binb.MainActivity.generateSXTone;
 
-/**
- * Created by frankie on 09/11/17.
- */
-
 public class BinauralB extends AppCompatActivity {
 
-    int[] frequences = {125,250,500,1000,2000};
-    float[] loadRes = new float[frequences.length*4];
-
+    int[] frequences;
+    float[] loadRes;
 
     AudioTrack testBSX;
     AudioTrack testBDX;
@@ -33,6 +33,7 @@ public class BinauralB extends AppCompatActivity {
     float volumeSX;
     float volumeDX;
     boolean test1=true;
+    boolean resume=false;
     int bb1=0;
     int i=0;
 
@@ -42,35 +43,48 @@ public class BinauralB extends AppCompatActivity {
         setContentView(R.layout.menu_bb);
         Intent myIntent= getIntent();
         loadRes= myIntent.getFloatArrayExtra("results");
+        frequences= myIntent.getIntArrayExtra("frequences");
 
-        menuBB(loadRes);
-        //menuBB2(loadRes);
+        menuBB();
     }
 
-    public void menuBB(final float [] loadR){
+    public void menuBB(){
         ImageButton playBB = (ImageButton)findViewById(R.id.play_button);
-        ImageButton stopBB = (ImageButton)findViewById(R.id.stop_button);
+        final ImageButton stopBB = (ImageButton)findViewById(R.id.stop_button);
         TextView textFD = (TextView)findViewById(R.id.tFD);
         TextView textFS = (TextView)findViewById(R.id.tFS);
         TextView textVD = (TextView)findViewById(R.id.tVD);
         TextView textVS = (TextView)findViewById(R.id.tVS);
+        final Chronometer crono = (Chronometer) findViewById(R.id.chronometer1);
+        crono.setVisibility(View.INVISIBLE);
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String value = sharedPref.getString("example_list", "default value");
+        String value2 = sharedPref.getString("durataBB","default value");
+        int deltaF = Integer.parseInt(value);
+        int durata = Integer.parseInt(value2);
+
 
         if(test1) {
             dxB = frequences[bb1];
-            sxB = frequences[bb1] + 10;
+            sxB = frequences[bb1] + deltaF;
         }
         if(!test1){
-            dxB = frequences[bb1]+ 10;
+            dxB = frequences[bb1]+ deltaF;
             sxB = frequences[bb1];
         }
-        volumeDX = loadR[i]+0.0001f;
-        volumeSX = loadR[i+1]+0.0001f;
+
+        volumeDX = loadRes[i];
+        volumeSX = loadRes[i+1];
         textFD.setText("Freq. dx: " +dxB+ " Hz" );
         textFS.setText("Freq. sx: "+sxB+ " Hz" );
         textVD.setText("Volume dx:"+LinearToDecibel(volumeDX)+ " dB");
         textVS.setText("Volume sx" +LinearToDecibel(volumeSX)+" dB");
-        testBSX = generateSXTone(sxB,60000);
-        testBDX = generateDXTone(dxB,60000);
+        testBSX = generateSXTone(sxB,durata*1000);
+        testBDX = generateDXTone(dxB,durata*1000);
+
+        stopBB.setVisibility(View.INVISIBLE);
+        playBB.setVisibility(View.VISIBLE);
 
         playBB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,8 +93,11 @@ public class BinauralB extends AppCompatActivity {
                 testBSX.setVolume(volumeSX);
                 testBDX.play();
                 testBSX.play();
-                //Toast.makeText(getApplicationContext(),"Db: "+LinearToDecibel(loadR[2]+0.0001f)+" ",Toast.LENGTH_SHORT).show();
-
+                crono.setVisibility(View.VISIBLE);
+                crono.setBase(SystemClock.elapsedRealtime());
+                crono.start();
+                v.setVisibility(View.INVISIBLE);
+                stopBB.setVisibility(View.VISIBLE);
             }
 
         });
@@ -88,19 +105,21 @@ public class BinauralB extends AppCompatActivity {
         stopBB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                resume =true;
                 testBDX.stop();
                 testBSX.stop();
+                crono.stop();
                 if(bb1<frequences.length-1){
                     bb1++;
                     i=i+4;
-                    menuBB(loadR);
+                    menuBB();
                 }
                 else {
                     if(test1) {
                         bb1 = 0;
                         i = 0;
                         test1 = false;
-                        menuBB(loadR);
+                        menuBB();
                     }
                     else{
                         Toast.makeText(getApplicationContext()," Test Completato ",Toast.LENGTH_SHORT).show();

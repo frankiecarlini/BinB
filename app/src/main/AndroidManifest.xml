@@ -16,12 +16,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:label="@string/app_name" android:name=".Paziente"/>
-        <activity android:label="@string/app_name" android:name=".Audiogramma"/>
-        <activity android:label="@string/app_name" android:name=".Paziente2"/>
-        <activity android:label="@string/app_name" android:name=".Paziente3"/>
+        <activity android:label="@string/app_name" android:name=".LoginAudioTest"/>
+        <activity android:label="@string/app_name" android:name=".LoadAudioTest"/>
+        <activity android:label="@string/app_name" android:name=".AudioTest"/>
         <activity android:label="@string/app_name"  android:name=".Risultati"/>
         <activity android:label="@string/app_name" android:name=".BinauralB"/>
+        <activity android:label="@string/app_name"  android:name=".Settings"/>
+
 
 
     </application>
