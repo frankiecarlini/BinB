@@ -2,8 +2,10 @@ package com.example.frankie.binb;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioFormat;
 import android.media.AudioTrack;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -30,12 +32,14 @@ import android.media.AudioManager;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static java.lang.Math.log10;
 
@@ -50,11 +54,24 @@ public class MainActivity extends AppCompatActivity  {
         ImageButton nuovo = (ImageButton)findViewById(R.id.new_audio);
         ImageButton bb = (ImageButton)findViewById(R.id.bb_test);
 
+
         nuovo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(MainActivity.this, LoginAudioTest.class);
-                MainActivity.this.startActivity(myIntent);
+                try {
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                    Set<String> selections = preferences.getStringSet("multiList", null);
+                    selections.toArray(new String[]{});
+                    Intent myIntent = new Intent(MainActivity.this, LoginAudioTest.class);
+                    MainActivity.this.startActivity(myIntent);
+                }
+                catch (NullPointerException n){
+                    Toast.makeText(getApplicationContext(),"Seleziona le frequenze",Toast.LENGTH_LONG).show();
+                    Intent myIntent = new Intent(MainActivity.this, Settings.class);
+                    MainActivity.this.startActivity(myIntent);
+                }
+
+
 
             }
 
@@ -63,8 +80,15 @@ public class MainActivity extends AppCompatActivity  {
         bb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(MainActivity.this, LoadAudioTest.class);
-                MainActivity.this.startActivity(myIntent);            }
+
+                if (countPazienti()!=0) {
+                    Intent myIntent = new Intent(MainActivity.this, LoadAudioTest.class);
+                    MainActivity.this.startActivity(myIntent);
+                }
+                else
+                    Toast.makeText(getApplicationContext(),"Nessun paziente nel database",Toast.LENGTH_LONG).show();
+
+            }
 
         });
 
@@ -274,6 +298,22 @@ public class MainActivity extends AppCompatActivity  {
         else
             db = -144.0f;
         return (float)db;
+    }
+
+    private int countPazienti(){
+        File[] files;
+        try {
+            files = new File("/data/data/com.example.frankie.binb/files/").listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) {
+                    return name.endsWith("paz.txt");
+                }
+            });
+            return files.length;
+        }
+        catch (NullPointerException n){
+            return 0;
+        }
     }
 
 

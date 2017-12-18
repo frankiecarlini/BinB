@@ -61,6 +61,22 @@
         <item>1500</item>
         <item>1750</item>
         <item>2000</item>
+        <item>2250</item>
+        <item>2500</item>
+        <item>2750</item>
+        <item>3000</item>
+        <item>3250</item>
+        <item>3500</item>
+        <item>3750</item>
+        <item>4000</item>
+        <item>4500</item>
+        <item>5000</item>
+        <item>5500</item>
+        <item>6000</item>
+        <item>6500</item>
+        <item>7000</item>
+        <item>7500</item>
+        <item>8000</item>
     </string-array>
     <string-array name="pref_freqvalues">
         <item>100</item>
@@ -86,6 +102,22 @@
         <item>1500</item>
         <item>1750</item>
         <item>2000</item>
+        <item>2250</item>
+        <item>2500</item>
+        <item>2750</item>
+        <item>3000</item>
+        <item>3250</item>
+        <item>3500</item>
+        <item>3750</item>
+        <item>4000</item>
+        <item>4500</item>
+        <item>5000</item>
+        <item>5500</item>
+        <item>6000</item>
+        <item>6500</item>
+        <item>7000</item>
+        <item>7500</item>
+        <item>8000</item>
     </string-array>
 
     <string-array name="pref_deltaF">

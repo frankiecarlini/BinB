@@ -68,7 +68,7 @@ public class LoadAudioTest extends AppCompatActivity {
                 frequences = readFreq(nome_file_freq, numF ,getApplicationContext());
                 loadRes = readValues(nome_file, numF , getApplicationContext());
 
-                Intent myIntent = new Intent(LoadAudioTest.this, BinauralB.class);
+                Intent myIntent = new Intent(LoadAudioTest.this, BinauralBeat.class);
                 myIntent.putExtra("results", loadRes);
                 myIntent.putExtra("frequences",frequences);
                 LoadAudioTest.this.startActivity(myIntent);

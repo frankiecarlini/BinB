@@ -21,6 +21,7 @@
         <activity android:label="@string/app_name" android:name=".AudioTest"/>
         <activity android:label="@string/app_name"  android:name=".Risultati"/>
         <activity android:label="@string/app_name" android:name=".BinauralB"/>
+        <activity android:label="@string/app_name" android:name=".BinauralBeat"/>
         <activity android:label="@string/app_name"  android:name=".Settings"/>
 
 

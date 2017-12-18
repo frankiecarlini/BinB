@@ -6,6 +6,7 @@ import android.media.AudioTrack;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Chronometer;
@@ -13,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import static com.example.frankie.binb.MainActivity.LinearToDecibel;
@@ -45,29 +47,36 @@ public class AudioTest extends AppCompatActivity {
         setContentView(R.layout.menu_audiotest);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        Set<String> selections = preferences.getStringSet("multiList",null);
-        String incremento = preferences.getString("incremento","default");
-        incr = Float.parseFloat(incremento);
-        incr = incr * 0.000000001f;
 
         try {
+            Set<String> selections = preferences.getStringSet("multiList",null);
+            String incremento = preferences.getString("incremento","default");
+            incr = Float.parseFloat(incremento);
+            incr = incr * 0.000000001f;
             String[] selected = selections.toArray(new String[]{});
             frequences = new int[selected.length];
             for (int i = 0; i < selected.length ; i++) {
                 frequences[i] = Integer.parseInt(selected[i]);
             }
+            results = new float[frequences.length*4];
+            ordina(frequences);
+            freq = frequences[0];
+
         }
         catch (NullPointerException e){
-
+            Intent myIntent = new Intent(AudioTest.this, Settings.class);
+            AudioTest.this.startActivity(myIntent);
+        }
+        catch (NumberFormatException n){
+            Intent myIntent = new Intent(AudioTest.this, Settings.class);
+            AudioTest.this.startActivity(myIntent);
         }
 
-        results = new float[frequences.length*4];
-        ordina(frequences);
+
 
         Intent myIntent = getIntent();
         String n = myIntent.getStringExtra("nome");
         String c = myIntent.getStringExtra("cognome");
-        freq = frequences[0];
 
         nome_file = n.toLowerCase().concat("_").concat(c.toLowerCase()).concat("_paz.txt");
         nome_file_freq = n.toLowerCase().concat("_").concat(c.toLowerCase()).concat("_freq.txt");
