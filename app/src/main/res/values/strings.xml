@@ -178,6 +178,12 @@
         <item>220 s</item>
         <item>230 s</item>
         <item>240 s</item>
+        <item>300 s</item>
+        <item>360 s</item>
+        <item>420 s</item>
+        <item>480 s</item>
+        <item>540 s</item>
+        <item>600 s</item>
     </string-array>
     <string-array name="durataBB_valori">
         <item>10</item>
@@ -204,6 +210,12 @@
         <item>220</item>
         <item>230</item>
         <item>240</item>
+        <item>300</item>
+        <item>360</item>
+        <item>420</item>
+        <item>480</item>
+        <item>540</item>
+        <item>600</item>
     </string-array>
     <string name="app_name">BinB</string>
     <string name="open">Open</string>
